@@ -8,108 +8,21 @@ import {
   addLog,
   changePlayer,
   initGame
+} from '../store/modules/gomoku';
+
+import {
+  RootState
 } from '../store/index';
 
 type GomokuStone  = number;
 
 type GomokuStones = GomokuStone[];
 
-// const SET_STONE     = 'SET_STONE';
-// const CHANGE_PLAYER = 'CHANGE_PLAYER';
-// const ADD_LOG       = 'ADD_LOG';
-// const INIT_GAME     = 'INIT_GAME';
-
-// function setStone(xAxis: number, yAxis: number) {
-//   // *** const assertion - type
-//   return {
-//     type: SET_STONE,
-//     stone: {
-//       xAxis,
-//       yAxis
-//     }
-//   } as const;
-// }
-
-// function changePlayer(player: number) {
-//   return {
-//     type: CHANGE_PLAYER,
-//     player
-//   } as const;
-// }
-
-// function addLog(log: string) {
-//   return {
-//     type: ADD_LOG,
-//     log
-//   } as const;
-// }
-
-// function initGame() {
-//   return {
-//     type: INIT_GAME
-//   } as const;
-// }
-
-// type GomokuAction = ReturnType<typeof setStone>
-//   | ReturnType<typeof changePlayer>
-//   | ReturnType<typeof addLog>
-//   | ReturnType<typeof initGame>
-
-// interface GomokuState {
-//   board: GomokuStones[];
-//   player: number;
-//   log: string[];
-// }
-
-// function reducer(state:GomokuState, action: GomokuAction):GomokuState {
-
-//   switch(action.type) {
-
-//     case SET_STONE :
-//       const { xAxis, yAxis } = action.stone
-
-//       return !state.board[yAxis][xAxis]? Object.assign({}, state, {
-//           board: state.board.map((stones, idx)=> 
-//             idx === yAxis? stones.map((stone, idx)=> 
-//               idx === xAxis? state.player 
-//               : stone) 
-//             : stones
-//           )
-//         }) : state;
-    
-//     case CHANGE_PLAYER :
-
-//       return Object.assign({}, state, {
-//         player: action.player
-//       });
-
-//     case ADD_LOG :
-
-//       return Object.assign({}, state, {
-//         log: action.log
-//       });
-
-//     case INIT_GAME :
-//       return Object.assign({}, state, {
-//         board: GomokuBoard.concat()
-//       })
-
-//     default: 
-//       throw new Error();
-//   }
-// }
-
-const GomokuBoard: GomokuStones[] = [];
 
 const ary: number[] = [];
 
 for(let i = 0; i < 15; i++) {
-  let temp:GomokuStone[] = [];
-  for(let ii = 0; ii < 15; ii++) {
-    temp.push(0);
-  }
   ary.push(i);
-  GomokuBoard.push(temp);
 }
 
 function vicory( board:GomokuStones[], playValue:number ): string {
@@ -227,18 +140,12 @@ function Row({yAxis, state, dispatch}: RowProps) {
 }
 
 
-function Gomoku({BOARD, SET}:any) {
+function Gomoku() {
 
   const [vic, setVic] = useState<string>("start");
 
-  // const [state, dispatch] = useReducer(reducer, {
-  //   board: GomokuBoard.concat(),
-  //   player: 1,
-  //   log: []
-  // });
-
   const dispatch = useDispatch();
-  const state = useSelector((state: GomokuState) => state);
+  const state = useSelector((state: RootState) => state.gomoku);
   
   useEffect(()=> {
     const data = vicory(state.board, state.player === 1? 2 : 1);
@@ -267,6 +174,5 @@ function Gomoku({BOARD, SET}:any) {
     </div>
   );
 }
-
 
 export default Gomoku;
