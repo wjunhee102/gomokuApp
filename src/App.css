@@ -1,38 +1,119 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100vh;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.gomoku {
+  display: block;
+  position: relative;
+  border: 1px solid #ccc;
+  width: 750px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.vic {
+  position: absolute;
+  width: 500px;
+  height: 50px;
+  text-align: center;
+  top: -50px;
+  left: calc(50% - 250px);
+}
+
+.vic.victory {
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  box-sizing: border-box;
+  padding-top: 345px;
+  font-size: 40px;
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+
+.backplate {
+  z-index: -1;
+  width: 700px;
+  height: 700px;
+  position: absolute;
+  left: 25px;
+  top: 25px;
+  background-color: #ffc09e;
+}
+
+.row {
+  display: flex;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.column {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+.column .x-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  left: 0;
+  top: calc(50% - 1px);
+  background-color: #262626;
+}
+
+.column .y-line {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  left: calc(50% - 1px);
+  top: 0;
+  background-color: #262626;
+}
+
+.row:first-child .column .y-line {
+  height: 50%;
+  top: 50%;
+}
+
+.row:nth-child(15) .column .y-line {
+  height: 50%;
+}
+
+.column:first-child .x-line {
+  width: 50%;
+  left: 50%;
+}
+
+.column:last-child .x-line {
+  width: 50%;
+}
+
+.stone {
+  width: 49px;
+  height: 49px;
+  border-radius: 50%;
+  position: absolute;
+  left: calc(50% - 25px);
+  top: calc(50% - 25px);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.stone.white {
+  background-color: white;
+  box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+.stone.black {
+  background-color: #000;
+  box-shadow: 0 0px 3px 0px rgba(255, 255, 255, 0.5);
+  cursor: default;
 }
