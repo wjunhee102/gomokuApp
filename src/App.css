@@ -8,6 +8,13 @@
 }
 
 .gomoku {
+  display: flex;
+  width: 1080px;
+  align-items: center;
+  justify-content: center;
+}
+
+.board {
   display: block;
   position: relative;
   border: 1px solid #ccc;

@@ -1,6 +1,8 @@
-export type GomokuStone  = number;
+export type GomokuStone  = 0 | 1 | 2 | 3 | 4;
 
 export type GomokuStones = GomokuStone[];
+
+export type Axis = number;
 
 const GomokuBoard: GomokuStones[] = [];
 
@@ -17,7 +19,9 @@ const CHANGE_PLAYER = 'gomoku/CHANGE_PLAYER' as const;
 const ADD_LOG       = 'gomoku/ADD_LOG' as const;
 const INIT_GAME     = 'gomoku/INIT_GAME' as const;
 
-export function setStone(xAxis: number, yAxis: number) {
+const SET_STONE2    = 'gomoku/SET_STONE2' as const; 
+
+export function setStone(xAxis: Axis, yAxis: Axis) {
   // *** const assertion - type
   return {
     type: SET_STONE,
@@ -27,6 +31,17 @@ export function setStone(xAxis: number, yAxis: number) {
     }
   } as const;
 }
+
+export function setStone2(xAxis: Axis, yAxis: Axis, player: number) {
+  return  {
+    type: SET_STONE2,
+    payload: {
+      xAxis,
+      yAxis,
+      player
+    }
+  } as const;
+} 
 
 export function changePlayer(player: number) {
   return {
@@ -52,6 +67,7 @@ export type GomokuAction = ReturnType<typeof setStone>
   | ReturnType<typeof changePlayer>
   | ReturnType<typeof addLog>
   | ReturnType<typeof initGame>
+  | ReturnType<typeof setStone2>
 
 export interface GomokuState {
   board: GomokuStones[];
@@ -81,6 +97,17 @@ function gomoku( state:GomokuState = initialState, action: GomokuAction ): Gomok
             : stones
           )
         }) : state;
+    
+    case SET_STONE2 :
+
+      return Object.assign({}, state, {
+          board: state.board.map((stones, idx)=> 
+            idx === action.payload.yAxis? stones.map((stone, idx)=> 
+              idx === action.payload.xAxis? action.payload.player
+              : stone) 
+            : stones
+          )
+        });
     
     case CHANGE_PLAYER :
 
