@@ -8,17 +8,22 @@ type GomokuStone  = number;
 
 type GomokuStones = GomokuStone[];
 
-function judgeCheetPlay( lines: any[][], x: number, y: number ) {
+function judgeCheetPlay( lines: any[][] ) {
   const cheetLine:any = [];
 
-  lines.forEach(line => {
-    console.log(line.filter(stone => stone.x === x && stone.y === y))
-    if(line.filter(stone => stone.x === x && stone.y === y).length >= 1) {
-      cheetLine.push(line);
-    }
-  })
-  // console.log(cheetLine);
-  return cheetLine.length === 2? true : false;
+  for(let i = 0; i < lines.length - 1; i++) {
+    lines[i].forEach((key)=> {
+      for(let ii = i + 1; ii < lines.length; ii++) {
+        console.log(key, lines[ii].filter(stone => stone.x === key.x && stone.y === key.y));
+        if(lines[ii].filter(stone => stone.x === key.x && stone.y === key.y).length >= 1) {
+          cheetLine.push(lines[ii]);
+        }
+      }
+    })
+  }
+
+  console.log("cheetLine",cheetLine, "lines", lines);
+  return cheetLine.length >= 1? true : false;
 }
 
 function judgeGomoku( board:GomokuStones[], playValue:number ): string {
@@ -72,7 +77,7 @@ function judgeGomoku( board:GomokuStones[], playValue:number ): string {
                   winningLine.push(temp);
                 } 
               }
-              console.log(winningLine);
+
             } 
             
           }
@@ -117,7 +122,7 @@ function judgeGomoku( board:GomokuStones[], playValue:number ): string {
                     winningLine.push(temp);
                   } 
                 }
-              console.log(winningLine);
+  
             }
           }
         
@@ -144,7 +149,7 @@ function judgeGomoku( board:GomokuStones[], playValue:number ): string {
                   if(board[i + 4][ii - 4] === 0 ) {
                     const temp:any[] = [];
                     for(let iii = 0; iii < 4; iii++) {
-                      temp.push({x: ii - iii, y: ii + iii});
+                      temp.push({x: ii - iii, y: i + iii});
                     }
                     winningLine.push(temp);
                   } 
@@ -153,12 +158,12 @@ function judgeGomoku( board:GomokuStones[], playValue:number ): string {
                   if(board[i + 3][ii - 3] === 0 ) {
                     const temp:any[] = [];
                     for(let iii = 0; iii < 3; iii++) {
-                      temp.push({x: ii - iii, y: ii + iii});
+                      temp.push({x: ii - iii, y: i + iii});
                     }
                     winningLine.push(temp);
                   } 
                 }
-              console.log(winningLine);
+
             }
           }
 
@@ -187,7 +192,7 @@ function judgeGomoku( board:GomokuStones[], playValue:number ): string {
                     if(board[i + 4][ii + 4] === 0 ) {
                       const temp:any[] = [];
                       for(let iii = 0; iii < 4; iii++) {
-                        temp.push({x: ii + iii, y: ii + iii});
+                        temp.push({x: ii + iii, y: i + iii});
                       }
                       winningLine.push(temp);
                     } 
@@ -196,12 +201,12 @@ function judgeGomoku( board:GomokuStones[], playValue:number ): string {
                     if(board[i + 3][ii + 3] === 0 ) {
                       const temp:any[] = [];
                       for(let iii = 0; iii < 3; iii++) {
-                        temp.push({x: ii + iii, y: ii + iii});
+                        temp.push({x: ii + iii, y: i + iii});
                       }
                       winningLine.push(temp);
                     } 
                   }
-                console.log(winningLine);
+           
               }
             }
 
@@ -216,8 +221,7 @@ function judgeGomoku( board:GomokuStones[], playValue:number ): string {
 
   }
 
-  console.log(judgeCheetPlay(winningLine, 1, 1));
-  if(judgeCheetPlay(winningLine, 1, 1)) {
+  if(judgeCheetPlay(winningLine)) {
     return "cheet"
   } else {
     return "no";
@@ -233,6 +237,7 @@ function Board() {
 
   useEffect(()=> {
     const data = judgeGomoku(board, player === 1? 2 : 1);
+    console.log(data);
     setVic(data);
   }, [board]);
 
